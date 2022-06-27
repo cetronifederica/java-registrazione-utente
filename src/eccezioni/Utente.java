@@ -11,7 +11,17 @@ public class Utente {
 
 	// costruttore
 
-	public Utente(String nome, String cognome, String email, String password, int eta) {
+	public Utente(String nome, String cognome, String email, String password, int eta)
+			throws IllegalArgumentException, NullPointerException {
+		// metodo di controllo dell'email
+		validaEmail(email);
+
+		// valido password FATTO IN CORREZIONE
+		isValidPassword(password);
+
+		// valida età FATTO IN CORREZIONE
+		isValidEta(eta);
+
 		this.nome = nome;
 		this.cognome = cognome;
 		this.email = email;
@@ -37,7 +47,7 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
-	public String getEmail() {
+	public String getEmail() throws IllegalArgumentException, NullPointerException {
 		return email;
 	}
 
@@ -45,7 +55,7 @@ public class Utente {
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public String getPassword() throws IllegalArgumentException, NullPointerException {
 		return password;
 	}
 
@@ -53,7 +63,7 @@ public class Utente {
 		this.password = password;
 	}
 
-	public int getEta() {
+	public int getEta() throws IllegalArgumentException, NullPointerException {
 		return eta;
 	}
 
@@ -61,21 +71,40 @@ public class Utente {
 		this.eta = eta;
 	}
 
-	// metodi validazione
+	// metodi validazione FATTO IN CORREZIONE
+	private void validaEmail(String emailInput) {
+		if (emailInput == null) {
+			throw new NullPointerException("Email non può essere null");
 
-	private boolean isValidEta(int etaInput) {
-		if (etaInput > 18) {
-			return true;
-		} else {
-			return false;
+		}
+
+		int counterChar = 0;
+		for (int i = 0; i < emailInput.length(); i++) {
+			char current = emailInput.charAt(i);
+			if (current == '@') {
+				counterChar++;
+			}
+		}
+		if (counterChar != 1 || !emailInput.contains(".")) {
+			// interrompi e solleva eccezione
+			throw new IllegalArgumentException("email non valida");
 		}
 	}
 
-	private boolean isValidPassword(int passInput) {
-		if (passInput > 8 && passInput < 12) {
-			return true;
-		} else {
-			return false;
+	private void isValidEta(int etaInput) {
+		if (etaInput < 18) {
+			throw new IllegalArgumentException("età nn valida");
+
+		}
+	}
+
+	private void isValidPassword(String passwordInput) {
+		if (passwordInput == null) {
+			throw new NullPointerException("password non può essere null");
+		}
+		if (passwordInput.length() < 8 && passwordInput.length() > 12) {
+			throw new IllegalArgumentException("password non valida");
+
 		}
 	}
 
